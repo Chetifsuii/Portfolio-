@@ -1,0 +1,378 @@
+<!DOCTYPE html><html><head><base href="https://websimengine.local/portfolio/cherif-tas/"></head><body>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap');
+
+    body, html {
+        font-family: 'IM Fell English', serif;
+        background-color: #e8e1d1;
+        color: #2c2c2c;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        width: 100%;
+    }
+    .newspaper {
+        background-color: #f9f4e8;
+        position: relative;
+        overflow: hidden;
+        min-height: 100vh;
+        width: 100%;
+        box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        background-image: 
+            linear-gradient(to right, rgba(0,0,0,0.1) 3px, transparent 3px),
+            linear-gradient(to bottom, rgba(0,0,0,0.1) 3px, transparent 3px);
+        background-size: 20% 20%;
+    }
+    .newspaper::before, .newspaper::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        mix-blend-mode: multiply;
+    }
+    .newspaper::before {
+        background: 
+            url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise' x='0%25' y='0%25' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E"),
+            linear-gradient(to right, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 20%, rgba(0,0,0,0) 80%, rgba(0,0,0,0.05) 100%),
+            linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 20%, rgba(0,0,0,0) 80%, rgba(0,0,0,0.05) 100%);
+    }
+    .newspaper::after {
+        background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper' x='0%25' y='0%25' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23paper)' opacity='0.05'/%3E%3C/svg%3E");
+    }
+    header {
+        border-bottom: 4px double #2c2c2c;
+        padding: 20px 0;
+        margin-bottom: 20px;
+        background-color: rgba(249, 244, 232, 0.9);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    h1 {
+        font-size: 64px;
+        text-align: center;
+        font-weight: bold;
+        margin: 0;
+        color: #1a472a;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+    .subheading {
+        text-align: center;
+        font-style: italic;
+        margin-top: 10px;
+        font-size: 18px;
+        color: #5a5a5a;
+    }
+    nav {
+        text-align: center;
+        margin: 20px 0;
+        border-top: 1px solid #2c2c2c;
+        border-bottom: 1px solid #2c2c2c;
+        padding: 10px 0;
+        background-color: rgba(249, 244, 232, 0.9);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    nav a {
+        color: #1a472a;
+        text-decoration: none;
+        padding: 5px 10px;
+        margin: 0 5px;
+        font-size: 18px;
+        transition: all 0.3s ease;
+    }
+    nav a:hover {
+        background-color: #1a472a;
+        color: #f9f4e8;
+    }
+    main {
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .section {
+        display: none;
+        padding: 20px;
+        margin-top: 20px;
+        animation: unfold 1s ease-out;
+        transform-origin: top center;
+        background-color: rgba(249, 244, 232, 0.9);
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-radius: 5px;
+    }
+    .section.active {
+        display: block;
+    }
+    h2 {
+        font-size: 36px;
+        color: #1a472a;
+        border-bottom: 2px solid #1a472a;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    p {
+        text-indent: 20px;
+        margin-bottom: 15px;
+        font-size: 18px;
+    }
+    #articles-list {
+        list-style-type: none;
+        padding: 0;
+    }
+    #articles-list li {
+        cursor: pointer;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+        transition: background-color 0.3s ease;
+    }
+    #articles-list li:hover {
+        background-color: #e6e1d2;
+    }
+    #article-content {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: rgba(249, 244, 232, 0.9);
+        border: 1px solid #d3d3a7;
+        box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    
+    @keyframes unfold {
+        from {
+            transform: rotateX(-90deg);
+            opacity: 0;
+        }
+        to {
+            transform: rotateX(0deg);
+            opacity: 1;
+        }
+    }
+    
+    .section p {
+        opacity: 0;
+        animation: fadeIn 0.5s ease-out forwards;
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    nav a {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    nav a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #1a472a;
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.3s ease;
+    }
+    
+    nav a:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+
+    @media (min-width: 768px) {
+        .two-column {
+            column-count: 2;
+            column-gap: 40px;
+        }
+    }
+
+    .button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #1a472a;
+        color: #f9f4e8;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        margin-top: 10px;
+    }
+
+    .button:hover {
+        background-color: #2c6143;
+    }
+
+    .project {
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .project:last-child {
+        border-bottom: none;
+    }
+
+    .article-tag {
+        display: inline-block;
+        background-color: #1a472a;
+        color: #f9f4e8;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 14px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="newspaper">
+    <header>
+        <h1>The Cherif Tas Gazette</h1>
+        <div class="subheading">Chronicles of a Web Developer's Journey</div>
+    </header>
+
+    <nav>
+        <a href="#" onclick="showSection('home')">Front Page</a>
+        <a href="#" onclick="showSection('about')">About the Editor</a>
+        <a href="#" onclick="showSection('projects')">Featured Works</a>
+        <a href="#" onclick="showSection('articles')">Latest Articles</a>
+        <a href="#" onclick="showSection('contact')">Correspondence</a>
+    </nav>
+
+    <main>
+        <section id="home" class="section active">
+            <h2>Welcome to The Cherif Tas Gazette</h2>
+            <div class="two-column">
+                <p>Dear esteemed reader, welcome to this digital broadsheet, a curious blend of yesteryear's charm and tomorrow's innovation. As you peruse these virtual pages, you'll find yourself immersed in the world of a passionate web developer at the dawn of his journey.</p>
+                <p>Herein lies a collection of thoughts, projects, and articles crafted by yours truly, Cherif Tas. Each piece is meticulously penned to provide you with insights into the realms of web development, creative writing, psychology, and the fascinating world of artificial intelligence.</p>
+                <p>Whether you're here to explore the latest in digital creation, delve into thought-provoking articles, or simply to witness the growth of a budding developer, I bid you welcome. So, settle in with your beverage of choice, and let us embark on this journey through code, creativity, and cognition together.</p>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <h2>About the Editor</h2>
+            <div class="two-column">
+                <p>Greetings, dear reader. I am Cherif Tas, a passionate web developer standing at the threshold of a grand digital adventure. Though I may be a beginner in the vast landscape of web development, my enthusiasm and dedication know no bounds.</p>
+                <p>Currently, I am honing my skills and expanding my horizons at the National High School of Public Grounds in Algeria. This esteemed institution serves as the crucible in which my talents are being forged, providing me with a solid foundation in both technical knowledge and critical thinking.</p>
+                <p>Beyond the realm of coding, I am an ardent lover of the written word. My heart beats to the rhythm of storytelling, and I am presently embarking on a literary journey, crafting a book that I hope will one day grace the shelves of readers worldwide. This creative endeavor allows me to explore the depths of human imagination and weave tales that resonate with the soul.</p>
+                <p>My intellectual curiosity extends further into the fascinating field of psychology. I find myself captivated by the intricacies of the human mind, always eager to understand the cognitive processes that shape our perceptions and behaviors. This interest in psychology not only enriches my storytelling but also informs my approach to user experience in web development.</p>
+                <p>In recent times, I have become increasingly intrigued by the burgeoning field of artificial intelligence. The potential of AI to revolutionize our world, from enhancing our daily lives to solving complex global challenges, never ceases to amaze me. I am particularly excited about the intersection of AI with web development and how it can be leveraged to create more intuitive, responsive, and personalized user experiences.</p>
+                <p>Through this gazette, I invite you to join me on my journey of growth and discovery. Together, we'll explore the ever-evolving landscape of web development, delve into the art of storytelling, unravel the mysteries of the human psyche, and ponder the implications of artificial intelligence on our future. Welcome, dear reader, to my world of endless possibilities and ceaseless learning.</p>
+            </div>
+        </section>
+
+        <section id="projects" class="section">
+            <h2>Featured Works</h2>
+            <div class="project">
+                <h3>ENSTP Informational Website</h3>
+                <p>A simple yet informative website dedicated to the National High School of Public Works (ENSTP). This project aims to provide valuable information and experiences for high school graduates. It serves as a comprehensive resource for students interested in pursuing their studies at ENSTP.</p>
+                <a href="https://enstpinfo.netlify.app/" class="button" target="_blank">Visit ENSTP Info</a>
+            </div>
+            <div class="project">
+                <h3>English Learning through Algerian Dialect</h3>
+                <p>An innovative web application designed to teach English using the Algerian dialect. This project features interactive flipping cards, making language learning both fun and engaging. It's a unique approach to language education, bridging the gap between local dialects and global languages.</p>
+                <a href="https://project1-aka.pages.dev/" class="button" target="_blank">Try English Learning App</a>
+            </div>
+            <div class="project">
+                <h3>University Grade Calculator</h3>
+                <p>My first web application, a practical tool for university students to calculate their grades. This project showcases my skills in HTML, CSS, and JavaScript, and was developed using Visual Studio Code and deployed on Cloudflare Pages. It's a testament to my growing abilities in web development and my commitment to creating useful tools for fellow students.</p>
+                <a href="https://flipcard.pages.dev/" class="button" target="_blank">Use Grade Calculator</a>
+            </div>
+        </section>
+
+        <section id="articles" class="section">
+            <h2>Latest Articles</h2>
+            <div class="two-column">
+                <ul id="articles-list">
+                    <!-- Articles will be dynamically added here -->
+                </ul>
+                <div id="article-content"></div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <h2>Correspondence</h2>
+            <div class="two-column">
+                <p>Dear readers, should you wish to reach out with questions, comments, or engaging discourse, please do not hesitate to contact your humble editor through the following means:</p>
+                <p><strong>Electronic Mail:</strong> cheriftas20042004@gmail.com</p>
+                <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/cherif-tas-7504b8319" target="_blank">Cherif Tas</a></p>
+                <p><strong>GitHub:</strong> github.com/cherif-tas</p>
+                <p>I eagerly await your correspondence and look forward to the exchange of ideas that may ensue. Your thoughts and opinions are invaluable in shaping my journey as a web developer and writer.</p>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+    const articles = [
+        { 
+            title: "Unveiling the Secrets of Life's Evolution: A Microscopic Marvel",
+            content: `<span class="article-tag">Biology</span> <span class="article-tag">Microbiology</span> <span class="article-tag">Genetics</span>
+            
+            In the grand tapestry of scientific endeavor, where each thread weaves a tale of discovery, a recent study published in the esteemed journal "Science Advances" has illuminated a fascinating chapter in the story of life's evolution on our blue planet. This groundbreaking research, conducted by the brilliant minds at Queen Mary University in London, has peeled back the veil on a microscopic marvel that challenges our understanding of biological history.
+
+            At the heart of this revelation lies a humble yet extraordinary creature known as "Amoebidium." This single-celled denizen of freshwater environments, a close biological relative to animals, harbors within its genome a secret that has left the scientific community in awe. For nestled within the genetic makeup of Amoebidium are fragments of ancient giant viruses, a discovery that is unprecedented and sheds light on a possible pathway for the evolution of complex life from its simpler ancestors.
+
+            Dr. Alex de Mendoza Soler, the intrepid leader of this genetic expedition, and his team have uncovered vast troves of genetic material within Amoebidium's genome that trace their lineage back to these colossal viruses—some of the largest ever discovered. This finding lends credence to the notion that viruses have played a pivotal role in shaping the evolutionary journey of living organisms throughout biological history.
+
+            But the story doesn't end there. The researchers observed that these viral sequences, now permanent residents in Amoebidium's genetic household, have undergone a fascinating transformation. Through a process known as methylation—a chemical modification that silences genes—Amoebidium has developed an advanced defensive strategy to manage these foreign genetic elements and maintain its genomic stability.
+
+            Dr. de Mendoza Soler, with a hint of wonder in his voice, likened this discovery to finding "Trojan horses hidden within Amoebidium's DNA." He explained, "These viral insertions could be dangerous, but it appears that Amoebidium has found a way to keep them in check through chemical silencing."
+
+            The team's curiosity led them further down the rabbit hole of discovery. By comparing the genomes of various Amoebidium isolates, they uncovered significant variations in giant virus content. This observation suggests that the incorporation and silencing of viruses into the genome is not a one-time event but an ongoing, dynamic process.
+
+            "These findings challenge our traditional understanding of the relationship between viruses and their hosts," Dr. de Mendoza Soler reflected. "Conventionally, viruses are seen merely as attackers, but this study paints a more complex, interactive picture. It seems that viral insertions may have played a crucial role in the evolution of complex organisms by providing them with new genes, all thanks to the chemical taming of these invasive genetic elements."
+
+            As we stand on the precipice of this new understanding, we are reminded of the intricate dance of life—where even the smallest players can have profound impacts on the grand stage of evolution. The tale of Amoebidium and its viral passengers serves as a testament to the endless wonders waiting to be uncovered in the microscopic world beneath our feet.
+
+            In the annals of scientific discovery, this study will undoubtedly be remembered as a pivotal moment—a time when we gained a deeper appreciation for the complex interplay between different forms of life and the myriad ways in which evolution crafts the diversity of our biosphere. As we continue to unravel the mysteries of life's origins and development, we can only imagine what other secrets lie hidden in the genomes of the countless creatures that share our planet.`,
+        }
+    ];
+
+    function showSection(sectionId) {
+        document.querySelectorAll('.section').forEach(section => {
+            section.classList.remove('active');
+        });
+        document.getElementById(sectionId).classList.add('active');
+        
+        if (sectionId === 'articles') {
+            displayArticlesList();
+        }
+    }
+
+    function displayArticlesList() {
+        const articlesList = document.getElementById('articles-list');
+        articlesList.innerHTML = '';
+        articles.forEach((article, index) => {
+            const li = document.createElement('li');
+            li.textContent = article.title;
+            li.onclick = () => displayArticle(index);
+            articlesList.appendChild(li);
+        });
+    }
+
+    function displayArticle(index) {
+        const articleContent = document.getElementById('article-content');
+        articleContent.innerHTML = `
+            <h3>${articles[index].title}</h3>
+            ${articles[index].content}
+        `;
+    }
+
+    displayArticlesList();
+</script>
+
+</body></html>
